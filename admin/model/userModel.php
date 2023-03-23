@@ -56,4 +56,11 @@ class userModel {
        $sql="DELETE FROM admin WHERE tenTK=:userName";
        $dbConnet->deleteData($sql,$data);
    }
+   public function getDataLastInsert(){
+    $dbConnet= new MySQLConnet();
+    $sql="SELECT * FROM khachhang ORDER BY maKH DESC LIMIT 1";
+    $cate=$dbConnet->getData($sql,null);
+    $dbConnet->disconnet();
+    return $cate;
+}
 }

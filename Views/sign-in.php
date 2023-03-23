@@ -99,6 +99,7 @@ https://templatemo.com/tm-559-zay-shop
                                                 <input type="text" id="form3Example1c" class="form-control" name="userPassword" />
                                                 <label class="form-label" for="form3Example1c">Password</label>
                                             </div>
+                                     
                                         </div>
                                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                             <a href="../Controller/userController.php?action=signIn">

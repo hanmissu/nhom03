@@ -74,7 +74,7 @@ https://templatemo.com/tm-559-zay-shop
                             <div class="row justify-content-center">
                                 <?php
                                 $userID = isset( $_SESSION["userID"]) ? $_SESSION["userID"] : "";
-                                $user = new userModel($userID, "", 0, "", "", "");
+                                $user = new userModel($userID, "", 0, "", "", "","","",0);
                                 $data = $user->getDataByID();
                              
                                 //   var_dump($data);die;
@@ -118,6 +118,7 @@ https://templatemo.com/tm-559-zay-shop
                                         </div>
                                         
                                         <button type="submit" name="action" value="logOut" class="btn btn-danger">Đăng xuất</button>
+                                        <button type="submit" name="action" value="updateInfo" class="btn">Cập nhật</button>
                                     </form>
                                 <?php
 

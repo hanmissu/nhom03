@@ -14,7 +14,7 @@ $userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : "";
 $date = date('d-m-Y');
 $total = isset($_SESSION['sum']) ? $_SESSION['sum'] : 0;;
 $action = isset($_GET["action"]) ? $_GET["action"] : "";
-$user = new userModel($userID, "", "", "", "", "");
+$user = new userModel($userID, "", "", "", "", "","","",0);
 $dataUser = $user->getDataByID();
 $fullName = isset($dataUser[0]["tenKH"]) ? $dataUser[0]["tenKH"] : "";
 
@@ -31,7 +31,6 @@ if ($provinceID == "" || $districtID == "" || $wardID == "" || $address == "") {
     $_SESSION["emptyAddress"] = true;
     header("Location: ../Views/check_out.php");
 } else {
-
     try {
         //lấy thông tin thành phố
         $urlProvince = "https://provinces.open-api.vn/api/p/" . $provinceID;
@@ -65,7 +64,7 @@ if ($provinceID == "" || $districtID == "" || $wardID == "" || $address == "") {
                 $oerDetail = new orderDetailModel($idOrderLastInsert[0]["maDonHang"], $pro[0]["maGiay"], $pro[0]["tenGiay"], $_SESSION['number'][$pro[0]["maGiay"]], $pro[0]["gia"]);
                 $oerDetail->inssertOrderDetail();
             }
-
+            
             // gửi mail
             $order = new orderModel(0, $date, $userID, $fullName, 0, "", $total);
             $idOrderLastInsert = $order->getDataLastInsert();
@@ -81,8 +80,7 @@ if ($provinceID == "" || $districtID == "" || $wardID == "" || $address == "") {
                 </ul>";
             }
 
-            $userMail = $_SESSION["userMail"];
-            var_dump($userMail);
+            $userMail =  $_SESSION["shoppingCart_Email"];
             $mail = new Mailer();
             $mail->datHangMail($title, $Content, $userMail);
 

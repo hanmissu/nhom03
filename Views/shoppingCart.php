@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include_once "head/head.php" ;include_once "../config.php";?>
+<?php include_once "head/head.php";
+include_once "../config.php"; ?>
 
 <body>
     <!-- Start Top Nav -->
@@ -137,14 +138,12 @@
                                     }
                                 }
                                 ?>
-
-
                                 <div class="col-lg-12">
                                     <?php
                                     $userID = isset($_SESSION['userID']) ? $_SESSION["userID"] : "";
-                                    $user = new userModel($userID, "", "", "", "", "");
+                                    $user = new userModel($userID, "", "", "", "", "", "", "", 0);
                                     $dataUser = $user->getDataByID();
-                                    if (isset($_SESSION["signIn"])==false) {
+                                    if (isset($_SESSION["signIn"]) == false) {
                                     ?>
 
                                         <div class="card bg-primary text-white rounded-3">
@@ -164,12 +163,12 @@
                                                     </div>
 
                                                     <div class="form-outline form-white mb-4">
-                                                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17" minlength="19" maxlength="19" value="" />
+                                                        <input name="shoppingCart_PhoneNumber" type="text" id="typeText" class="form-control form-control-lg" siez="17" minlength="19" maxlength="19" value="" />
                                                         <label class="form-label" for="typeText">Phone Number</label>
                                                     </div>
 
                                                     <div class="form-outline form-white mb-4">
-                                                        <input type="text" id="typeText" class="form-control form-control-lg" value="" required />
+                                                        <input name="shoppingCart_Email" type="email" id="typeText" class="form-control form-control-lg" value="" required />
                                                         <label class="form-label" for="typeText">Email</label>
                                                     </div>
 
@@ -226,17 +225,17 @@
 
                                                 <form class="mt-4" action="./check_out.php" method="POST">
                                                     <div class="form-outline form-white mb-4">
-                                                        <input name="shoppingCart_FullName" type="text" id="typeName" class="form-control form-control-lg" siez="17" value="<?php echo $dataUser[0]['tenKH'] ?>" required />
+                                                        <input name="shoppingCart_FullName" type="text" id="typeName" class="form-control form-control-lg" value="<?php echo $dataUser[0]['tenKH'] ?>" required />
                                                         <label class="form-label" for="typeName">Full name</label>
                                                     </div>
 
                                                     <div class="form-outline form-white mb-4">
-                                                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17" minlength="19" maxlength="19" value="<?php echo $dataUser[0]['SDT'] ?>" required />
+                                                        <input name="shoppingCart_PhoneNumber" type="text" id="typeText" class="form-control form-control-lg" minlength="10" maxlength="11" value="<?php echo $dataUser[0]['SDT'] ?>" required />
                                                         <label class="form-label" for="typeText">Phone Number</label>
                                                     </div>
 
                                                     <div class="form-outline form-white mb-4">
-                                                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17" minlength="19" maxlength="19" value="<?php echo $dataUser[0]['email'] ?>" required />
+                                                        <input name="shoppingCart_Email" type="email" id="typeText" class="form-control form-control-lg" value="<?php echo $dataUser[0]['email'] ?>" required />
                                                         <label class="form-label" for="typeText">Email</label>
                                                     </div>
                                                     <!-- <div class="form-outline form-white mb-4">
@@ -262,21 +261,22 @@
                                                         <p class="mb-2"><?php echo number_format($_SESSION["sum"] + 20) ?></p>
                                                     </div>
 
-                                                    <button type="button" class="btn btn-info btn-block btn-lg">
-                                                        <div class="d-flex justify-content-between">
-                                                            <?php
-                                                            if (!empty($_SESSION['cart'])) {
-                                                            ?>
-                                                                <a style=" text-decoration: none" href="./check_out.php"> <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span></a>
-                                                            <?php
-                                                            } else {
-                                                            ?>
-                                                                <a style=" text-decoration: none" href="#"> <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span></a>
-                                                            <?php
-                                                            } ?>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <?php
+                                                        if (!empty($_SESSION['cart'])) {
+                                                        ?>
+
+                                                            <button type="submit" class="btn btn-success"><span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span></button>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <button type="submit" class="btn btn-success"><span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span></button>
+                                                        <?php
+                                                        } ?>
 
 
-                                                        </div>
+                                                    </div>
                                                     </button>
 
                                                 </form>
@@ -293,16 +293,13 @@
 
                         </div>
 
-          
+
                     </div>
                 </div>
 
             </div>
         </div>
     </section>
-
-
-
 
     <!-- Start Footer -->
     <?php include_once "footer/footer.php" ?>

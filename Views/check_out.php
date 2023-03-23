@@ -19,10 +19,7 @@ include_once "../config.php"; ?>
 
     <?php include_once ROOT . "/Model/productModel.php";
     include_once ROOT . "/Model/userModel.php";
-
     ?>
-
-
     <div class="container">
         <div class="py-5 text-center">
 
@@ -82,25 +79,25 @@ include_once "../config.php"; ?>
                     ?>
                         </ul>
 
-
-
-
             </div>
-
 
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3">Billing address</h4>
-                <form class="needs-validation" novalidate action="../Controller/orderController.php" method="post">
+                <form class="needs-validation" novalidate action="../Controller/orderController.php" method="POST">
                     <?php
                     $userID = $_SESSION['userID'];
-                    $user = new userModel($userID, "", "", "", "", "");
+                    $user = new userModel($userID, "", "", "", "", "", "", "", 0);
                     $dataUser = $user->getDataByID();
+                    if(!isset($_SESSION["shoppingCart_FullName"])){
+                        $_SESSION["shoppingCart_FullName"]=$_POST["shoppingCart_FullName"];
+                        $_SESSION["shoppingCart_PhoneNumber"]=$_POST["shoppingCart_PhoneNumber"];
+                        $_SESSION["shoppingCart_Email"]=$_POST["shoppingCart_Email"];
+                    }
                     ?>
-
                     <div class="col-md-9 mb-3">
                         <div class="col-md-12 mb-3">
                             <label for="firstName">Full name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="" value="<?php echo $dataUser[0]["tenKH"] ?>" required disabled>
+                            <input type="text" class="form-control" id="firstName" placeholder="" value="<?php echo  $_SESSION["shoppingCart_FullName"] ?>" required disabled>
                             <div class="invalid-feedback">
                                 Valid first name is required.
                             </div>
@@ -109,12 +106,10 @@ include_once "../config.php"; ?>
                     </div>
 
                     <div class="col-md-9 mb-3">
-                        <label for="username">Username</label>
+                        <label for="username">Phone Number</label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">@</span>
-                            </div>
-                            <input type="text" class="form-control" id="username" placeholder="Username" value="<?php echo $dataUser[0]["taiKhoan"] ?>" required disabled>
+
+                            <input type="text" class="form-control" id="username" placeholder="Username" value="<?php echo $_SESSION["shoppingCart_PhoneNumber"] ?>" required disabled>
                             <div class="invalid-feedback" style="width: 100%;">
                                 Your username is required.
                             </div>
@@ -123,7 +118,7 @@ include_once "../config.php"; ?>
 
                     <div class="col-md-9 mb-3">
                         <label for="email">Email <span class="text-muted">(Optional)</span></label>
-                        <input type="email" class="form-control" id="email" placeholder="you@example.com" value="<?php echo $dataUser[0]["email"] ?>" required disabled>
+                        <input name="email" type="email" class="form-control" id="email" placeholder="you@example.com" value="<?php echo  $_SESSION["shoppingCart_Email"] ?>" required disabled>
                         <div class="invalid-feedback">
                             Please enter a valid email address for shipping updates.
                         </div>
@@ -149,8 +144,8 @@ include_once "../config.php"; ?>
                                 </div>
                                 <span><input type="text" class="form-control" id="address" name="address" required /> </span>
                                 <?php
-                                
-                                if(isset(  $_SESSION["emptyAddress"])==true &&   $_SESSION["emptyAddress"] == true){
+
+                                if (isset($_SESSION["emptyAddress"]) == true &&   $_SESSION["emptyAddress"] == true) {
                                     echo ' <label style="color:red" class="form-label" for="form3Example1c">Plese enter your address</label>';
                                     unset($_SESSION["emptyAddress"]);
                                 }
@@ -161,7 +156,7 @@ include_once "../config.php"; ?>
                             </div>
                         </div>
                     </div>
-        
+
                     <hr class="mb-4">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="same-address">
@@ -171,11 +166,8 @@ include_once "../config.php"; ?>
                         <input type="checkbox" class="custom-control-input" id="save-info">
                         <label class="custom-control-label" for="save-info">Save this information for next time</label>
                     </div>
-                    
                     <button class="btn btn-primary btn-lg btn-block" name="action" value="checkOut" type="submit">Checkout</button>
                     <hr class="mb-4">
-
-
                 </form>
                 <form class="" method="POST" target="_blank" enctype="application/x-www-form-urlencoded" action="./xulythanhtoanmomo.php">
                     <input type="hidden" value="<?php echo $_SESSION['sum']; ?>" name="tongtien_vnd">

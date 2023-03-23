@@ -1,7 +1,7 @@
 <?php
 include_once "../config.php";
-include_once ROOT."/Model/categoryModel.php";
-include_once ROOT."/Model/productModel.php";
+include_once ROOT . "/Model/categoryModel.php";
+include_once ROOT . "/Model/productModel.php";
 
 ?>
 
@@ -85,14 +85,30 @@ include_once ROOT."/Model/productModel.php";
                             </li>
                         </ul>
                     </div>
-                    <div class="col-md-6 pb-4">
+                    <!-- <div class="col-md-6 pb-4">
+                    <form action="../Controller/searchController.php" method="post">
                         <div class="d-flex">
-                            <select class="form-control">
-                                <option>Featured</option>
-                                <option>A to Z</option>
+                            <select class="form-control" name="select">
+                                <option value="a">Featured</option>
+                                <option value="b">A to Z</option>
                                 <option>Item</option>
                             </select>
+                            <button type="submit">lọc</button>
                         </div>
+                        </form>
+                    </div> -->
+
+                    <div class="col-md-6 pb-4">
+                   
+                        <div class="d-flex">
+                            <select class="form-control" >
+                                <option >Featured</option>
+                                <option >A to Z</option>
+                                <option>Item</option>
+                            </select>
+                            
+                        </div>
+                    
                     </div>
                 </div>
                 <?php

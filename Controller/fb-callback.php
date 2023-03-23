@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once "../config.php";
-include_once ROOT.'/Facebook/autoload.php';
-include_once ROOT.'/fbconfig.php';
-include_once ROOT.'/Model/userModel.php';
+include_once ROOT . '/Facebook/autoload.php';
+include_once ROOT . '/fbconfig.php';
+include_once ROOT . '/Model/userModel.php';
 
 $helper = $fb->getRedirectLoginHelper();
 if (isset($_GET['state'])) {
@@ -40,7 +40,6 @@ if (!isset($accessToken)) {
 try {
     // Returns a `Facebook\FacebookResponse` object
     $response = $fb->get('/me?fields=name,id,email', $accessToken->getValue());
-    
 } catch (Facebook\Exceptions\FacebookResponseException $e) {
     echo 'Graph returned an error: ' . $e->getMessage();
     exit;
@@ -48,23 +47,43 @@ try {
     echo 'Facebook SDK returned an error: ' . $e->getMessage();
     exit;
 }
-var_dump($response);die;
-$fbUser = $response->getGraphUser();
-$user = new userModel(0, $fbUser["name"], null, $fbUser["email"], null, null);
-$data = $user->getDataByEmail();
 
-if($data[0]["email"] == $fbUser["email"]){
-    $_SESSION["signIn"] = true;
-    $_SESSION["isSign"] = true;
-    $_SESSION["userID"]=$data[0]["maKH"];
-    $_SESSION["userMail"]=$data[0]["email"];
-    header("Location: .././index.php");
-}
-if ($data == null) {
+$fbUser = $response->getGraphUser();
+$user = new userModel(0, $fbUser["name"], null, "", null, null, $fbUser["id"],"",2);
+$fb = $user->getDataByIdFacebook();
+if ($fb == null) {
     $user->inssertUser();
     $_SESSION["signIn"] = true;
     $_SESSION["isSign"] = true;
-    $data = $user->getDataByEmail();
-    $_SESSION["userID"]=$data[0]["maKH"];
+    $data = $user->getDataLastInsert();
+    $_SESSION["userID"] = $data[0]["maKH"];
+    header("Location: .././index.php");
+} else {
+    $data = $user->getDataByIdFacebook();
+    $_SESSION["signIn"] = true;
+    $_SESSION["isSign"] = true;
+    $_SESSION["userID"] = $data[0]["maKH"];
+    $_SESSION["userMail"] = $data[0]["email"];
     header("Location: .././index.php");
 }
+
+
+
+
+    // $user = new userModel(0, $fbUser["name"], null, $fbUser["email"], null, null,"");
+    // $data = $user->getDataByEmail();
+    // if ($data[0]["email"] == $fbUser["email"]) {
+    //     $_SESSION["signIn"] = true;
+    //     $_SESSION["isSign"] = true;
+    //     $_SESSION["userID"] = $data[0]["maKH"];
+    //     $_SESSION["userMail"] = $data[0]["email"];
+    //     header("Location: .././index.php");
+    // }
+    // if ($data == null) {
+    //     $user->inssertUser();
+    //     $_SESSION["signIn"] = true;
+    //     $_SESSION["isSign"] = true;
+    //     $data = $user->getDataByEmail();
+    //     $_SESSION["userID"] = $data[0]["maKH"];
+    //     header("Location: .././index.php");
+    // }

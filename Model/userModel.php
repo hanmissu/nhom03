@@ -10,6 +10,9 @@ class userModel
     private $email;
     private $taiKhoan;
     private $matKhau;
+    private $idFacebook;
+    private $codeVerify;
+    private $status;
     public function getmatKhau()
     {
         return $this->matKhau;
@@ -65,8 +68,37 @@ class userModel
         $this->maKH = $maKH;
     }
 
+    
+    public function getIdFB()
+    {
+        return $this->idFacebook;
+    }
 
-    public function __construct($maKH, $tenKH, $sdt, $email, $taiKhoan, $matKhau)
+    public function setIdFB($id)
+    {
+        $this->idFacebook = $id;
+    }
+        
+    public function getCodeVetify()
+    {
+        return $this->codeVerify;
+    }
+
+    public function serCodeVerify($code)
+    {
+        $this->codeVerify = $code;
+    }
+        
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStastus($status)
+    {
+        $this->status = $status;
+    }
+    public function __construct($maKH, $tenKH, $sdt, $email, $taiKhoan, $matKhau,$idFacebook,$codeVerify,$status)
     {
         $this->maKH = $maKH;
         $this->tenKH = $tenKH;
@@ -74,6 +106,9 @@ class userModel
         $this->email = $email;
         $this->taiKhoan = $taiKhoan;
         $this->matKhau = $matKhau;
+        $this->idFacebook=$idFacebook;
+        $this->codeVerify=$codeVerify;
+        $this->status=$status;
     }
 
     public function  inssertUser()
@@ -84,11 +119,15 @@ class userModel
             'sdt' => $this->sdt,
             'email' => $this->email,
             'taiKhoan' => $this->taiKhoan,
-            'matKhau' => $this->matKhau
+            'matKhau' => $this->matKhau,
+            'idFacebook'=>$this->idFacebook,
+            'codeVerify'=>$this->codeVerify,
+            'status'=>$this->status,
         ];
         $dbConnet = new MySQLConnet();
         $pdo = $dbConnet->connet();
-        $sql = "INSERT INTO khachhang (maKH,tenKH, SDT,email,taiKhoan,matKhau) VALUES (:maKH,:tenKH,:sdt,:email,:taiKhoan,:matKhau)";
+        $sql = "INSERT INTO khachhang (maKH,tenKH, SDT,email,taiKhoan,matKhau,idFacebook,codeVerify,status)
+         VALUES (:maKH,:tenKH,:sdt,:email,:taiKhoan,:matKhau,:idFacebook,:codeVerify,:status)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute($data);
     }
@@ -121,6 +160,12 @@ class userModel
         $sql = "SELECT * FROM khachhang where SDT=:SDT";
         return $dbConn->getData($sql, $data);
     }
+    public function getDataByIdFacebook(){
+        $data = ["idFacebook" => $this->idFacebook];
+        $dbConn = new MySQLConnet();
+        $sql = "SELECT * FROM khachhang where idFacebook=:idFacebook";
+        return $dbConn->getData($sql, $data);
+    }
     public function deleteData($userName)
     {
         $data = [
@@ -145,7 +190,27 @@ class userModel
         $dbConnet = new MySQLConnet();
         $sql = "UPDATE khachhang set tenKH=:tenKH,sdt=:sdt,email=:email,matKhau=:matKhau WHERE maKH=:maKH";
         $dbConnet->update($sql, $data);
+        return $dbConnet->getData($sql, $data);
     }
+    public function updateStatusByID($id){
+        $data = [
+            'maKH' => $id,
+            'code'=>$this->codeVerify,
+        ];
+
+        $dbConnet = new MySQLConnet();
+        $sql = "UPDATE khachhang set codeVerify=:code,status=1 WHERE maKH=:maKH";
+        $dbConnet->update($sql, $data); 
+        return $dbConnet->getData($sql, $data);
+    }
+    public function getDataLastInsert(){
+        $dbConnet= new MySQLConnet();
+        $sql="SELECT maKH FROM khachhang ORDER BY maKH DESC LIMIT 1";
+        $cate=$dbConnet->getData($sql,null);
+        $dbConnet->disconnet();
+        return $cate;
+    }
+ 
     //Hàm login sau khi mạng xã hội trả dữ liệu về
 
 }
